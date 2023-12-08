@@ -609,8 +609,8 @@ export const Game: React.FC = () => {
               })}
             </div>
           </div>
-          <div className={'mx-auto text-white w-fit absolute left-0 right-0 bottom-10 text-center'}>
-            <div>查看游戏规则</div>
+          <div className={'mx-auto text-white w-fit text-center mt-16'}>
+            <div>阅读游戏规则</div>
             <DownOutlined />
           </div>
         </div>
