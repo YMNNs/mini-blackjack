@@ -18,6 +18,8 @@ interface TooltipProperties {
   show: boolean
 }
 
+const compactMargin = 100
+
 const tagStyle = (points: number | undefined): string => {
   if (!points) {
     return 'bg-white font-black'
@@ -101,12 +103,20 @@ export const CardGroup: React.FC<Properties> = ({
       placement={heap ? 'left' : 'rightTop'}
     >
       <div className={'mx-auto w-fit'}>
-        <div className={'flex gap-2'} style={compact ? { marginLeft: 90 } : undefined}>
+        <div className={'flex gap-2'} style={compact ? { marginLeft: compactMargin } : undefined}>
           {cards.map((item, index) => {
             return hideIndex && hideIndex.includes(index) ? (
-              <div className={'card cardback'} key={index} style={compact ? { marginLeft: -90 } : undefined} />
+              <div
+                className={'card cardback'}
+                key={index}
+                style={compact ? { marginLeft: -compactMargin } : undefined}
+              />
             ) : (
-              <div className={`card card${item}`} key={index} style={compact ? { marginLeft: -90 } : undefined} />
+              <div
+                className={`card card${item}`}
+                key={index}
+                style={compact ? { marginLeft: -compactMargin } : undefined}
+              />
             )
           })}
         </div>

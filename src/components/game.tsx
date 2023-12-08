@@ -5,7 +5,7 @@ import { useResetState } from 'ahooks'
 import { History } from '../types/history.ts'
 import { Card, GameStatus } from '../types/cards.ts'
 import { allCards, calculateCardPoints } from '../functions.ts'
-import { DollarOutlined } from '@ant-design/icons'
+import { DollarOutlined, DownOutlined } from '@ant-design/icons'
 
 const decks = 6 // 牌套数
 const cutLimit = 0.2 // 切牌
@@ -444,15 +444,25 @@ export const Game: React.FC = () => {
     <>
       <div className={'w-screen'} style={{ backgroundColor: '#0b7530' }}>
         <div style={{ maxWidth: 1000, height: 48 }} className={'w-full mx-auto flex text-white items-center'}>
-          <div className={'w-full flex justify-center font-bold'}>牌堆：{52 * decks - usedCards}</div>
-          <div className={'w-full flex justify-center font-bold'}>余额：${balance}</div>
-          <div className={'w-full flex justify-center font-bold'}>底注：${baseBet}</div>
-          <div className={'w-full flex justify-center font-bold'}>
-            已下注：${playerSplit ? `${betLeft}/${betRight}` : bet}
+          <div className={'w-full flex justify-center font-bold flex-wrap'}>
+            <div className={'mx-2'}>牌堆</div>
+            <div>{52 * decks - usedCards}</div>
+          </div>
+          <div className={'w-full flex justify-center font-bold flex-wrap'}>
+            <div className={'mx-2'}>余额</div>
+            <div>${balance}</div>
+          </div>
+          <div className={'w-full flex justify-center font-bold flex-wrap'}>
+            <div className={'mx-2'}>底注</div>
+            <div>${baseBet}</div>
+          </div>
+          <div className={'w-full flex justify-center font-bold flex-wrap'}>
+            <div className={'mx-2'}>已下注</div>
+            <div>${playerSplit ? `${betLeft}/${betRight}` : bet}</div>
           </div>
         </div>
       </div>
-      <div className={'w-screen tableBackground'}>
+      <div className={'w-screen tableBackground px-4'}>
         <div style={{ maxWidth: 1000 }} className={'w-full'}>
           <div className={'flex gap-4'}>
             {viewHeap && (
@@ -480,7 +490,7 @@ export const Game: React.FC = () => {
               <CardGroup cards={playerCardsRight} compact gameStatus={playerStatusRight} />
             </div>
             <div className={'flex gap-4'}>
-              <div className={'flex mt-3 gap-2 bg-green-600 py-3 rounded shadow justify-center w-full'}>
+              <div className={'flex mt-3 gap-2 bg-green-600 py-3 rounded shadow justify-center w-full flex-wrap'}>
                 <Button disabled={!hitLeftButtonEnabled} onClick={() => hit('left')}>
                   加牌
                 </Button>
@@ -498,7 +508,7 @@ export const Game: React.FC = () => {
                   </Button>
                 </Tooltip>
               </div>
-              <div className={'flex mt-3 gap-2 bg-green-600 py-3 rounded shadow justify-center w-full'}>
+              <div className={'flex mt-3 gap-2 bg-green-600 py-3 rounded shadow justify-center w-full flex-wrap'}>
                 <Button disabled={!hitRightButtonEnabled} onClick={() => hit('right')}>
                   加牌
                 </Button>
@@ -520,7 +530,7 @@ export const Game: React.FC = () => {
           </div>
           <div hidden={playerSplit}>
             <CardGroup cards={playerCardsNotSplit} gameStatus={playerStatusNotSplit} />
-            <div className={'flex mt-3 gap-2 bg-green-600 py-3 rounded shadow justify-center'}>
+            <div className={'flex mt-3 gap-2 bg-green-600 py-3 rounded shadow justify-center flex-wrap'}>
               <Button disabled={!hitButtonEnabled} onClick={() => hit('notSplit')}>
                 加牌
               </Button>
@@ -574,7 +584,7 @@ export const Game: React.FC = () => {
           </div>
           <div className={'flex mt-4 gap-4'}>
             <div className={'flex flex-col gap-2 w-60'}>
-              <Tooltip title={'如果当前游戏未结束，开启新游戏将失去已下注的金额'}>
+              <Tooltip title={'如果当前游戏未结束，开启新游戏将失去已下注的金额'} placement={'right'}>
                 <Button onClick={newGame} block>
                   新游戏&nbsp;
                   <span>
@@ -598,6 +608,10 @@ export const Game: React.FC = () => {
                 return <div key={index}>{item.toString()}</div>
               })}
             </div>
+          </div>
+          <div className={'mx-auto text-white w-fit absolute left-0 right-0 bottom-10 text-center'}>
+            <div>查看游戏规则</div>
+            <DownOutlined />
           </div>
         </div>
       </div>
