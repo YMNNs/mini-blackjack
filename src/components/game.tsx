@@ -224,39 +224,31 @@ export const Game: React.FC = () => {
       setInsuranceButtonEnabled(false)
       const playerHardPoints = calculateCardPoints(playerCardsNotSplit).at(-1)!
       resetDealerMask()
-      if (calculateCardPoints(dealerCards).at(-1)! > playerHardPoints) {
-        // 庄家直接获胜
+      // 庄家翻牌直到17
+      const _dealerCards = dealerCards
+      let _usedCards = usedCards
+      while (calculateCardPoints(_dealerCards).at(-1)! < 17) {
+        _dealerCards.push(cardsHeap[_usedCards])
+        _usedCards += 1
+      }
+      setDealerCards(_dealerCards)
+      setUsedCards(_usedCards)
+      const dealerHardPoints = calculateCardPoints(_dealerCards).at(-1)!
+      if (dealerHardPoints > 21 || dealerHardPoints < playerHardPoints) {
+        // 庄家爆牌或玩家赢了
+        setHistory(previousState => [new History(undefined, 'player', bet * 2, playerCardsNotSplit), ...previousState])
+        setBalance(previousState => previousState + bet * 2)
+        setPlayerStatusNotSplit('win')
+      } else if (dealerHardPoints > playerHardPoints) {
         setHistory(previousState => [new History(undefined, 'dealer', bet, playerCardsNotSplit), ...previousState])
         setPlayerStatusNotSplit('lose')
       } else {
-        // 庄家翻牌直到17
-        const _dealerCards = dealerCards
-        let _usedCards = usedCards
-        while (calculateCardPoints(_dealerCards).at(-1)! < 17) {
-          _dealerCards.push(cardsHeap[_usedCards])
-          _usedCards += 1
-        }
-        setDealerCards(_dealerCards)
-        setUsedCards(_usedCards)
-        const dealerHardPoints = calculateCardPoints(_dealerCards).at(-1)!
-        if (dealerHardPoints > 21 || dealerHardPoints < playerHardPoints) {
-          // 庄家爆牌或玩家赢了
-          setHistory(previousState => [
-            new History(undefined, 'player', bet * 2, playerCardsNotSplit),
-            ...previousState,
-          ])
-          setBalance(previousState => previousState + bet * 2)
-          setPlayerStatusNotSplit('win')
-        } else if (dealerHardPoints > playerHardPoints) {
-          setHistory(previousState => [new History(undefined, 'dealer', bet, playerCardsNotSplit), ...previousState])
-          setPlayerStatusNotSplit('lose')
-        } else {
-          // 平局，退还筹码
-          setHistory(previousState => [new History(undefined, 'draw', bet, playerCardsNotSplit), ...previousState])
-          setBalance(previousState => previousState + bet)
-          setPlayerStatusNotSplit('draw')
-        }
+        // 平局，退还筹码
+        setHistory(previousState => [new History(undefined, 'draw', bet, playerCardsNotSplit), ...previousState])
+        setBalance(previousState => previousState + bet)
+        setPlayerStatusNotSplit('draw')
       }
+
       return
     } else if (where === 'left') {
       setStandLeftButtonEnabled(false)
@@ -276,64 +268,53 @@ export const Game: React.FC = () => {
     resetDealerMask()
     const playerHardLeftPoints = calculateCardPoints(playerCardsLeft).at(-1)!
     const playerHardRightPoints = calculateCardPoints(playerCardsRight).at(-1)!
-    if (calculateCardPoints(dealerCards).at(-1)! > Math.max(playerHardLeftPoints, playerHardRightPoints)) {
-      // 庄家比两侧牌都大，直接获胜
-      setHistory(previousState => [new History(undefined, 'dealer', betLeft, playerCardsLeft), ...previousState])
-      setPlayerStatusLeft('lose')
-      setHistory(previousState => [new History(undefined, 'dealer', betRight, playerCardsRight), ...previousState])
-      setPlayerStatusRight('lose')
-    } else {
-      // 庄家翻牌直到17
-      const _dealerCards = dealerCards
-      let _usedCards = usedCards
-      while (calculateCardPoints(_dealerCards).at(-1)! < 17) {
-        _dealerCards.push(cardsHeap[_usedCards])
-        _usedCards += 1
+    // 庄家翻牌直到17
+    const _dealerCards = dealerCards
+    let _usedCards = usedCards
+    while (calculateCardPoints(_dealerCards).at(-1)! < 17) {
+      _dealerCards.push(cardsHeap[_usedCards])
+      _usedCards += 1
+    }
+    setDealerCards(_dealerCards)
+    setUsedCards(_usedCards)
+    const dealerHardPoints = calculateCardPoints(_dealerCards).at(-1)!
+    // 比较左侧
+    if (playerHardLeftPoints <= 21) {
+      if (dealerHardPoints > 21 || dealerHardPoints < playerHardLeftPoints) {
+        // 庄家爆牌或玩家赢了
+        setHistory(previousState => [new History(undefined, 'player', betLeft * 2, playerCardsLeft), ...previousState])
+        setBalance(previousState => previousState + betLeft * 2)
+        setPlayerStatusLeft('win')
+      } else if (dealerHardPoints > playerHardLeftPoints) {
+        // 庄家赢了
+        setHistory(previousState => [new History(undefined, 'dealer', betLeft, playerCardsLeft), ...previousState])
+        setPlayerStatusLeft('lose')
+      } else {
+        // 平局，退还筹码
+        setHistory(previousState => [new History(undefined, 'draw', betLeft, playerCardsLeft), ...previousState])
+        setBalance(previousState => previousState + betLeft)
+        setPlayerStatusLeft('draw')
       }
-      setDealerCards(_dealerCards)
-      setUsedCards(_usedCards)
-      const dealerHardPoints = calculateCardPoints(_dealerCards).at(-1)!
-      // 比较左侧
-      if (playerHardLeftPoints <= 21) {
-        if (dealerHardPoints > 21 || dealerHardPoints < playerHardLeftPoints) {
-          // 庄家爆牌或玩家赢了
-          setHistory(previousState => [
-            new History(undefined, 'player', betLeft * 2, playerCardsLeft),
-            ...previousState,
-          ])
-          setBalance(previousState => previousState + betLeft * 2)
-          setPlayerStatusLeft('win')
-        } else if (dealerHardPoints > playerHardLeftPoints) {
-          // 庄家赢了
-          setHistory(previousState => [new History(undefined, 'dealer', betLeft, playerCardsLeft), ...previousState])
-          setPlayerStatusLeft('lose')
-        } else {
-          // 平局，退还筹码
-          setHistory(previousState => [new History(undefined, 'draw', betLeft, playerCardsLeft), ...previousState])
-          setBalance(previousState => previousState + betLeft)
-          setPlayerStatusLeft('draw')
-        }
-      }
-      if (playerHardRightPoints <= 21) {
-        // 比较右侧
-        if (dealerHardPoints > 21 || dealerHardPoints < playerHardRightPoints) {
-          // 庄家爆牌或玩家赢了
-          setHistory(previousState => [
-            new History(undefined, 'player', betRight * 2, playerCardsRight),
-            ...previousState,
-          ])
-          setBalance(previousState => previousState + betRight * 2)
-          setPlayerStatusRight('win')
-        } else if (dealerHardPoints > playerHardRightPoints) {
-          // 庄家赢了
-          setHistory(previousState => [new History(undefined, 'dealer', betRight, playerCardsRight), ...previousState])
-          setPlayerStatusRight('lose')
-        } else {
-          // 平局，退还筹码
-          setHistory(previousState => [new History(undefined, 'draw', betRight, playerCardsRight), ...previousState])
-          setBalance(previousState => previousState + betRight)
-          setPlayerStatusRight('draw')
-        }
+    }
+    if (playerHardRightPoints <= 21) {
+      // 比较右侧
+      if (dealerHardPoints > 21 || dealerHardPoints < playerHardRightPoints) {
+        // 庄家爆牌或玩家赢了
+        setHistory(previousState => [
+          new History(undefined, 'player', betRight * 2, playerCardsRight),
+          ...previousState,
+        ])
+        setBalance(previousState => previousState + betRight * 2)
+        setPlayerStatusRight('win')
+      } else if (dealerHardPoints > playerHardRightPoints) {
+        // 庄家赢了
+        setHistory(previousState => [new History(undefined, 'dealer', betRight, playerCardsRight), ...previousState])
+        setPlayerStatusRight('lose')
+      } else {
+        // 平局，退还筹码
+        setHistory(previousState => [new History(undefined, 'draw', betRight, playerCardsRight), ...previousState])
+        setBalance(previousState => previousState + betRight)
+        setPlayerStatusRight('draw')
       }
     }
   }
