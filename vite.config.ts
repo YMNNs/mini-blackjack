@@ -5,4 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/mini-blackjack/',
+  define: {
+    __BUILD_DATE__: Date.now(),
+  },
 })

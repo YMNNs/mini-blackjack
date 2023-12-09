@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Checkbox, Dropdown, Tooltip } from 'antd'
 import { CardGroup } from './card-group.tsx'
 import { useResetState } from 'ahooks'
@@ -9,6 +9,7 @@ import { DollarOutlined, DownOutlined } from '@ant-design/icons'
 
 const decks = 6 // 牌套数
 const cutLimit = 0.2 // 切牌
+const maxHistoryLength = 20 // 历史长度
 
 export const Game: React.FC = () => {
   // 作弊：查看庄家手牌
@@ -75,6 +76,12 @@ export const Game: React.FC = () => {
   // （分牌右侧）双倍下注按钮可用
   const [doubleRightButtonEnabled, setDoubleRightButtonEnabled, resetDoubleRightButtonEnabled] =
     useResetState<boolean>(false)
+
+  useEffect(() => {
+    if (history.length > maxHistoryLength) {
+      setHistory(previousState => previousState.slice(0, maxHistoryLength))
+    }
+  }, [history])
 
   const reset = () => {
     resetBet()
@@ -585,7 +592,7 @@ export const Game: React.FC = () => {
               </div>
             </div>
             <div className={'w-full bg-black bg-opacity-40 text-white font-mono p-2 rounded max-h-40 overflow-auto'}>
-              {history.slice(0, 100).map((item, index) => {
+              {history.slice(0, maxHistoryLength).map((item, index) => {
                 return <div key={index}>{item.toString()}</div>
               })}
             </div>
