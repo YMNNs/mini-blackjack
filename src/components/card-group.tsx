@@ -95,6 +95,8 @@ export const CardGroup: React.FC<Properties> = ({
     )
   }
 
+  const _compact = compact || cards.length > 4
+
   return (
     <Tooltip
       title={heap ? '下一张' : <span>{tooltipStyle(gameStatus).title}</span>}
@@ -103,19 +105,19 @@ export const CardGroup: React.FC<Properties> = ({
       placement={heap ? 'left' : 'rightTop'}
     >
       <div className={'mx-auto w-fit'}>
-        <div className={'flex gap-2'} style={compact ? { marginLeft: compactMargin } : undefined}>
+        <div className={'flex gap-2'} style={_compact ? { marginLeft: compactMargin } : undefined}>
           {cards.map((item, index) => {
             return hideIndex && hideIndex.includes(index) ? (
               <div
                 className={'card cardback'}
                 key={index}
-                style={compact ? { marginLeft: -compactMargin } : undefined}
+                style={_compact ? { marginLeft: -compactMargin } : undefined}
               />
             ) : (
               <div
                 className={`card card${item}`}
                 key={index}
-                style={compact ? { marginLeft: -compactMargin } : undefined}
+                style={_compact ? { marginLeft: -compactMargin } : undefined}
               />
             )
           })}
