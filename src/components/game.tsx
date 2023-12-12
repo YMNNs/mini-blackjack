@@ -194,7 +194,9 @@ export const Game: React.FC = () => {
       setHitButtonEnabled(true)
       setStandButtonEnabled(true)
       setDoubleButtonEnabled(true)
-      if (playerCardsNotSplit[0].charAt(0) === playerCardsNotSplit[1].charAt(0)) {
+      if (
+        calculateCardPoints([playerCardsNotSplit[0]]).at(-1) === calculateCardPoints([playerCardsNotSplit[1]]).at(-1)
+      ) {
         // 两张相同可分牌
         setSplitButtonEnabled(true)
       }
@@ -214,7 +216,9 @@ export const Game: React.FC = () => {
       setHitButtonEnabled(true)
       setStandButtonEnabled(true)
       setDoubleButtonEnabled(true)
-      if (playerCardsNotSplit[0].charAt(0) === playerCardsNotSplit[1].charAt(0)) {
+      if (
+        calculateCardPoints([playerCardsNotSplit[0]]).at(-1) === calculateCardPoints([playerCardsNotSplit[1]]).at(-1)
+      ) {
         // 两张相同可分牌
         setSplitButtonEnabled(true)
       }
