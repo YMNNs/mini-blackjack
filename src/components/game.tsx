@@ -81,7 +81,7 @@ export const Game: React.FC = () => {
     if (history.length > maxHistoryLength) {
       setHistory(previousState => previousState.slice(0, maxHistoryLength))
     }
-  }, [history])
+  }, [history, setHistory])
 
   const reset = () => {
     resetBet()
@@ -221,7 +221,7 @@ export const Game: React.FC = () => {
     }
   }
 
-  const stand = (where: 'notSplit' | 'left' | 'right') => {
+  const stand = (where: 'notSplit' | 'left' | 'right', force: boolean = false) => {
     setSplitButtonEnabled(false)
     // 停牌
     if (where === 'notSplit') {
@@ -261,14 +261,14 @@ export const Game: React.FC = () => {
       setStandLeftButtonEnabled(false)
       setHitLeftButtonEnabled(false)
       setDoubleLeftButtonEnabled(false)
-      if (standRightButtonEnabled) {
+      if (standRightButtonEnabled && !force) {
         return
       }
     } else {
       setStandRightButtonEnabled(false)
       setHitRightButtonEnabled(false)
       setDoubleRightButtonEnabled(false)
-      if (standLeftButtonEnabled) {
+      if (standLeftButtonEnabled && !force) {
         return
       }
     }
@@ -286,7 +286,7 @@ export const Game: React.FC = () => {
     setUsedCards(_usedCards)
     const dealerHardPoints = calculateCardPoints(_dealerCards).at(-1)!
     // 比较左侧
-    if (playerHardLeftPoints <= 21) {
+    if (playerHardLeftPoints <= 21 && (!force || where === 'left')) {
       if (dealerHardPoints > 21 || dealerHardPoints < playerHardLeftPoints) {
         // 庄家爆牌或玩家赢了
         setHistory(previousState => [new History(undefined, 'player', betLeft * 2, playerCardsLeft), ...previousState])
@@ -303,7 +303,7 @@ export const Game: React.FC = () => {
         setPlayerStatusLeft('draw')
       }
     }
-    if (playerHardRightPoints <= 21) {
+    if (playerHardRightPoints <= 21 && (!force || where === 'right')) {
       // 比较右侧
       if (dealerHardPoints > 21 || dealerHardPoints < playerHardRightPoints) {
         // 庄家爆牌或玩家赢了
@@ -328,19 +328,26 @@ export const Game: React.FC = () => {
 
   const hit = (where: 'notSplit' | 'left' | 'right', double: boolean = false) => {
     let _bet = bet
-    if (double) {
-      if (where === 'notSplit') {
+
+    if (where === 'notSplit') {
+      if (double) {
         _bet = bet + baseBet
         setBalance(previousState => previousState - baseBet)
         setBet(previousState => previousState + baseBet)
         setHitButtonEnabled(false)
-      } else if (where === 'left') {
-        _bet = betLeft + baseBet
+      }
+    } else if (where === 'left') {
+      _bet = betLeft
+      if (double) {
+        _bet += baseBet
         setBalance(previousState => previousState - baseBet)
         setBetLeft(previousState => previousState + baseBet)
         setHitLeftButtonEnabled(false)
-      } else {
-        _bet = betRight + baseBet
+      }
+    } else {
+      _bet = betRight
+      if (double) {
+        _bet += baseBet
         setBalance(previousState => previousState - baseBet)
         setBetRight(previousState => previousState + baseBet)
         setHitRightButtonEnabled(false)
@@ -383,8 +390,8 @@ export const Game: React.FC = () => {
     }
     if (playerHardPoints > 21) {
       // 玩家爆牌
-      resetDealerMask()
       if (where === 'notSplit') {
+        resetDealerMask()
         setHitButtonEnabled(false)
         setStandButtonEnabled(false)
         setHistory(previousState => [new History(undefined, 'dealer', _bet, _playerCards), ...previousState])
@@ -394,11 +401,19 @@ export const Game: React.FC = () => {
         setStandLeftButtonEnabled(false)
         setHistory(previousState => [new History(undefined, 'dealer', _bet, _playerCards), ...previousState])
         setPlayerStatusLeft('burst')
+        if (!standRightButtonEnabled && !playerStatusRight) {
+          // 右侧已停牌
+          stand('right', true)
+        }
       } else {
         setHitRightButtonEnabled(false)
         setStandRightButtonEnabled(false)
         setHistory(previousState => [new History(undefined, 'dealer', _bet, _playerCards), ...previousState])
         setPlayerStatusRight('burst')
+        if (!standLeftButtonEnabled && !playerStatusLeft) {
+          // 左侧已停牌
+          stand('left', true)
+        }
       }
     }
   }
