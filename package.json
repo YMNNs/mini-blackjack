@@ -16,7 +16,7 @@
     "@ant-design/icons": "^5.2.6",
     "ahooks": "^3.7.8",
     "antd": "^5.12.2",
-    "github-markdown-css": "^5.4.0",
+    "github-markdown-css": "^5.5.0",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
