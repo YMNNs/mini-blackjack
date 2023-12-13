@@ -15,12 +15,6 @@
       "options": {
         "parser": "json"
       }
-    },
-    {
-      "files": "*.cjs",
-      "options": {
-        "parser": "babel"
-      }
     }
   ]
 }

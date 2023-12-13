@@ -31,6 +31,7 @@ module.exports = {
         varsIgnorePattern: '^_',
       },
     ],
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
   settings: {
     react: {

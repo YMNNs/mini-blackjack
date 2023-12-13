@@ -8,7 +8,7 @@ import { allCards, calculateCardPoints } from '../functions.ts'
 import { DollarOutlined, DownOutlined } from '@ant-design/icons'
 
 const decks = 6 // 牌套数
-const cutLimit = 0.2 // 切牌
+const cutLimit = 0.1 // 切牌
 const maxHistoryLength = 20 // 历史长度
 
 export const Game: React.FC = () => {
@@ -610,8 +610,8 @@ export const Game: React.FC = () => {
                 </Checkbox>
               </div>
             </div>
-            <div className={'w-full bg-black bg-opacity-40 text-white font-mono p-2 rounded max-h-40 overflow-auto'}>
-              {history.slice(0, maxHistoryLength).map((item, index) => {
+            <div className={'w-full bg-black bg-opacity-40 text-white font-mono p-2 rounded h-40 overflow-auto'}>
+              {history.map((item, index) => {
                 return <div key={index}>{item.toString()}</div>
               })}
             </div>
