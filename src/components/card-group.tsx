@@ -126,7 +126,7 @@ export const CardGroup: React.FC<Properties> = ({
           <div
             className={`${tagStyle(
               possiblePoints.at(-1),
-            )} w-fit mx-auto mt-2 py-1 px-2 rounded-2xl font-bold text-center shadow`}
+            )} w-fit mx-auto mt-2 py-0.5 px-2 rounded-2xl font-bold text-center shadow`}
           >
             {showPossible && !gameStatus ? possiblePoints.join('/') : possiblePoints.at(-1)}
           </div>

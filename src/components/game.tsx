@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Button, Checkbox, Dropdown, Tooltip } from 'antd'
+import { App, Button, Checkbox, Dropdown, Tooltip } from 'antd'
 import { CardGroup } from './card-group.tsx'
 import { useResetState } from 'ahooks'
 import { History } from '../types/history.ts'
@@ -12,6 +12,7 @@ const cutLimit = 0.1 // 切牌
 const maxHistoryLength = 20 // 历史长度
 
 export const Game: React.FC = () => {
+  const { modal } = App.useApp()
   // 作弊：查看庄家手牌
   const [viewDealerCards, setViewDealerCards] = useResetState<boolean>(false)
   // 作弊：查看牌堆
@@ -76,6 +77,8 @@ export const Game: React.FC = () => {
   // （分牌右侧）双倍下注按钮可用
   const [doubleRightButtonEnabled, setDoubleRightButtonEnabled, resetDoubleRightButtonEnabled] =
     useResetState<boolean>(false)
+
+  const gameInProgress: boolean = dealerMask.length > 0
 
   useEffect(() => {
     if (history.length > maxHistoryLength) {
@@ -178,7 +181,7 @@ export const Game: React.FC = () => {
     setInsuranceButtonEnabled(false)
     setBalance(previousState => previousState - baseBet / 2)
     setHistory(previousState => [
-      new History(`已扣除保险金 $${baseBet / 2}，如果庄家获得 21 点将赔付 $${baseBet}`),
+      new History(`已扣除保险费用 $${baseBet / 2}，如果庄家获得 21 点将赔付 $${baseBet}`),
       ...previousState,
     ])
     if (calculateCardPoints(dealerCards).at(-1) === 21) {
@@ -474,14 +477,14 @@ export const Game: React.FC = () => {
           <div className={'flex gap-4'}>
             {viewHeap && (
               <div className={'w-full'}>
-                <div className={'w-full bg-blue-500 my-3 py-2 text-center font-bold rounded shadow text-white'}>
+                <div className={'w-full bg-blue-500 my-3 py-1 text-center font-bold rounded shadow text-white'}>
                   牌 堆
                 </div>
                 <CardGroup cards={cardsHeap.slice(usedCards, usedCards + 10)} compact heap />
               </div>
             )}
             <div className={'w-full'}>
-              <div className={'w-full bg-yellow-400 my-3 py-2 text-center font-bold rounded shadow'}>庄 家</div>
+              <div className={'w-full bg-yellow-400 my-3 py-1 text-center font-bold rounded shadow'}>庄 家</div>
               <CardGroup
                 cards={dealerCards}
                 hideIndex={viewDealerCards ? [] : dealerMask}
@@ -490,7 +493,7 @@ export const Game: React.FC = () => {
               />
             </div>
           </div>
-          <div className={'w-full bg-green-500 my-3 py-2 text-center font-bold rounded shadow'}>你</div>
+          <div className={'w-full bg-green-500 my-3 py-1 text-center font-bold rounded shadow'}>你</div>
           <div hidden={!playerSplit}>
             <div className={'flex'}>
               <CardGroup cards={playerCardsLeft} compact gameStatus={playerStatusLeft} />
@@ -591,16 +594,29 @@ export const Game: React.FC = () => {
           </div>
           <div className={'flex mt-4 gap-4'}>
             <div className={'flex flex-col gap-2 w-60'}>
-              <Tooltip title={'如果当前游戏未结束，开启新游戏将失去已下注的金额'} placement={'right'}>
-                <Button onClick={newGame} block>
-                  新游戏&nbsp;
-                  <span>
-                    <DollarOutlined />
-                    &thinsp;
-                    {baseBet}
-                  </span>
-                </Button>
-              </Tooltip>
+              <Button
+                onClick={
+                  gameInProgress
+                    ? () =>
+                        modal.confirm({
+                          title: '本局游戏还未结束',
+                          content: '开始新游戏将会输掉已下注的金额。',
+                          onOk() {
+                            newGame()
+                          },
+                          centered: true,
+                        })
+                    : newGame
+                }
+                block
+              >
+                新游戏&nbsp;
+                <span>
+                  <DollarOutlined />
+                  &thinsp;
+                  {baseBet}
+                </span>
+              </Button>
               <div className={'w-full'}>
                 <Checkbox onChange={event => setViewDealerCards(event.target.checked)}>
                   <span className={'text-white'}>显示庄家的隐藏手牌</span>
