@@ -4,6 +4,8 @@
 
 [在线 DEMO](https://ymnns.github.io/mini-blackjack/)
 
+[![Deploy](https://github.com/YMNNs/mini-blackjack/actions/workflows/deploy.yml/badge.svg)](https://github.com/YMNNs/mini-blackjack/actions/workflows/deploy.yml)
+
 ## 游戏规则
 
 [查看游戏规则](rules.md)
