@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest'
 import { calculateCardPoints, allCards } from '../functions.ts'
 
 test('AK=21', () => {
