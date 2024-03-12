@@ -1,4 +1,4 @@
-import { Card } from './cards.ts'
+import type { Card } from './cards.ts'
 import { formatCards, formatDate } from '../functions.ts'
 
 export type Winner = 'dealer' | 'player' | 'draw'

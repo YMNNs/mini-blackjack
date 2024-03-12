@@ -1,5 +1,5 @@
 import { shuffle } from 'lodash-es'
-import { Card } from './types/cards.ts'
+import type { Card } from './types/cards.ts'
 export const calculateCardPoints = (cardNames: Card[]): number[] => {
   let softPoints: number = 0
   let aces: number = 0
@@ -63,6 +63,7 @@ const color = {
 }
 
 export const formatCards = (cardNames: Card[]): string => {
+  // @ts-ignore
   return cardNames.map(item => `${color[item.charAt(1)]}${item.charAt(0).toUpperCase().replace('T', '10')}`).join(', ')
 }
 

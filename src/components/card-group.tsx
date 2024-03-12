@@ -1,6 +1,6 @@
 import React from 'react'
 import { calculateCardPoints } from '../functions.ts'
-import { Card, GameStatus } from '../types/cards.ts'
+import type { Card, GameStatus } from '../types/cards.ts'
 import { Tooltip } from 'antd'
 
 interface Properties {

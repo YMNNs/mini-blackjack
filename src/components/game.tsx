@@ -3,7 +3,7 @@ import { App, Button, Checkbox, Dropdown, Tooltip } from 'antd'
 import { CardGroup } from './card-group.tsx'
 import { useResetState } from 'ahooks'
 import { History } from '../types/history.ts'
-import { Card, GameStatus } from '../types/cards.ts'
+import type { Card, GameStatus } from '../types/cards.ts'
 import { allCards, calculateCardPoints } from '../functions.ts'
 import { DollarOutlined, DownOutlined } from '@ant-design/icons'
 

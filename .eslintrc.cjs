@@ -32,6 +32,8 @@ module.exports = {
       },
     ],
     '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/consistent-type-imports': 'error',
+    'unicorn/prevent-abbreviations': 'off',
   },
   settings: {
     react: {
