@@ -15,8 +15,7 @@
 }
 
 body {
-  @apply overflow-x-hidden;
-  @apply font-sans;
+  @apply overflow-x-hidden font-sans;
 }
 
 .markdown-body {

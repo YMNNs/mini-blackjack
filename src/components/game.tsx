@@ -453,38 +453,38 @@ export const Game: React.FC = () => {
   return (
     <>
       <div className={'w-screen'} style={{ backgroundColor: '#0b7530' }}>
-        <div style={{ maxWidth: 1000, height: 48 }} className={'w-full mx-auto flex text-white items-center'}>
-          <div className={'w-full flex justify-center font-bold flex-wrap'}>
+        <div style={{ maxWidth: 1000, height: 48 }} className={'mx-auto flex w-full items-center text-white'}>
+          <div className={'flex w-full flex-wrap justify-center font-bold'}>
             <div className={'mx-2'}>牌堆</div>
             <div>{52 * decks - usedCards}</div>
           </div>
-          <div className={'w-full flex justify-center font-bold flex-wrap'}>
+          <div className={'flex w-full flex-wrap justify-center font-bold'}>
             <div className={'mx-2'}>余额</div>
             <div>${balance}</div>
           </div>
-          <div className={'w-full flex justify-center font-bold flex-wrap'}>
+          <div className={'flex w-full flex-wrap justify-center font-bold'}>
             <div className={'mx-2'}>底注</div>
             <div>${baseBet}</div>
           </div>
-          <div className={'w-full flex justify-center font-bold flex-wrap'}>
+          <div className={'flex w-full flex-wrap justify-center font-bold'}>
             <div className={'mx-2'}>已下注</div>
             <div>${playerSplit ? `${betLeft}/${betRight}` : bet}</div>
           </div>
         </div>
       </div>
-      <div className={'w-screen tableBackground px-4'}>
+      <div className={'tableBackground w-screen px-4'}>
         <div style={{ maxWidth: 1000 }} className={'w-full'}>
           <div className={'flex gap-4'}>
             {viewHeap && (
               <div className={'w-full'}>
-                <div className={'w-full bg-blue-500 my-3 py-1 text-center font-bold rounded shadow text-white'}>
+                <div className={'my-3 w-full rounded bg-blue-500 py-1 text-center font-bold text-white shadow'}>
                   牌 堆
                 </div>
                 <CardGroup cards={cardsHeap.slice(usedCards, usedCards + 10)} compact heap />
               </div>
             )}
             <div className={'w-full'}>
-              <div className={'w-full bg-yellow-400 my-3 py-1 text-center font-bold rounded shadow'}>庄 家</div>
+              <div className={'my-3 w-full rounded bg-yellow-400 py-1 text-center font-bold shadow'}>庄 家</div>
               <CardGroup
                 cards={dealerCards}
                 hideIndex={viewDealerCards ? [] : dealerMask}
@@ -493,14 +493,14 @@ export const Game: React.FC = () => {
               />
             </div>
           </div>
-          <div className={'w-full bg-green-500 my-3 py-1 text-center font-bold rounded shadow'}>你</div>
+          <div className={'my-3 w-full rounded bg-green-500 py-1 text-center font-bold shadow'}>你</div>
           <div hidden={!playerSplit}>
             <div className={'flex'}>
               <CardGroup cards={playerCardsLeft} compact gameStatus={playerStatusLeft} />
               <CardGroup cards={playerCardsRight} compact gameStatus={playerStatusRight} />
             </div>
             <div className={'flex gap-4'}>
-              <div className={'flex mt-3 gap-2 bg-green-600 py-3 rounded shadow justify-center w-full flex-wrap'}>
+              <div className={'mt-3 flex w-full flex-wrap justify-center gap-2 rounded bg-green-600 py-3 shadow'}>
                 <Button disabled={!hitLeftButtonEnabled} onClick={() => hit('left')}>
                   加牌
                 </Button>
@@ -518,7 +518,7 @@ export const Game: React.FC = () => {
                   </Button>
                 </Tooltip>
               </div>
-              <div className={'flex mt-3 gap-2 bg-green-600 py-3 rounded shadow justify-center w-full flex-wrap'}>
+              <div className={'mt-3 flex w-full flex-wrap justify-center gap-2 rounded bg-green-600 py-3 shadow'}>
                 <Button disabled={!hitRightButtonEnabled} onClick={() => hit('right')}>
                   加牌
                 </Button>
@@ -540,7 +540,7 @@ export const Game: React.FC = () => {
           </div>
           <div hidden={playerSplit}>
             <CardGroup cards={playerCardsNotSplit} gameStatus={playerStatusNotSplit} />
-            <div className={'flex mt-3 gap-2 bg-green-600 py-3 rounded shadow justify-center flex-wrap'}>
+            <div className={'mt-3 flex flex-wrap justify-center gap-2 rounded bg-green-600 py-3 shadow'}>
               <Button disabled={!hitButtonEnabled} onClick={() => hit('notSplit')}>
                 加牌
               </Button>
@@ -592,8 +592,8 @@ export const Game: React.FC = () => {
               </Dropdown.Button>
             </div>
           </div>
-          <div className={'flex mt-4 gap-4'}>
-            <div className={'flex flex-col gap-2 w-60'}>
+          <div className={'mt-4 flex gap-4'}>
+            <div className={'flex w-60 flex-col gap-2'}>
               <Button
                 onClick={
                   gameInProgress
@@ -626,13 +626,13 @@ export const Game: React.FC = () => {
                 </Checkbox>
               </div>
             </div>
-            <div className={'w-full bg-black bg-opacity-40 text-white font-mono p-2 rounded h-40 overflow-auto'}>
+            <div className={'h-40 w-full overflow-auto rounded bg-black bg-opacity-40 p-2 font-mono text-white'}>
               {history.map((item, index) => {
                 return <div key={index}>{item.toString()}</div>
               })}
             </div>
           </div>
-          <div className={'mx-auto text-white w-fit text-center mt-16'}>
+          <div className={'mx-auto mt-16 w-fit text-center text-white'}>
             <div>阅读游戏规则</div>
             <DownOutlined />
           </div>

@@ -6,7 +6,7 @@ import 'github-markdown-css/github-markdown-light.css'
 
 export const Help: React.FC = () => {
   return (
-    <div className={'mt-10 px-4 mx-auto'} style={{ maxWidth: 1000 }}>
+    <div className={'mx-auto mt-10 px-4'} style={{ maxWidth: 1000 }}>
       <Markdown remarkPlugins={[remarkGfm]} className={'markdown-body'}>
         {rules}
       </Markdown>

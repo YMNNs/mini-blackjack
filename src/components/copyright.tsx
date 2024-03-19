@@ -5,7 +5,7 @@ import React from 'react'
 
 export const Copyright: React.FC = () => {
   return (
-    <div className={'mx-auto w-fit text-center py-8'}>
+    <div className={'mx-auto w-fit py-8 text-center'}>
       <div>
         <Typography.Text strong>
           {name} v{version}
