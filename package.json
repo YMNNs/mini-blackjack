@@ -11,7 +11,7 @@
     "test": "vitest",
     "prettier:code": "prettier -c --ignore-unknown --write **/*",
     "lint:md": "lint-md -f ./**/*.md",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.md": "lint-md -f",
