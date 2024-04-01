@@ -19,7 +19,7 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.3.5",
+    "@ant-design/icons": "^5.3.6",
     "ahooks": "^3.7.10",
     "antd": "^5.15.4",
     "github-markdown-css": "^5.5.1",
