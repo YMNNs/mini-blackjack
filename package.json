@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.6",
-    "ahooks": "^3.7.10",
+    "ahooks": "^3.7.11",
     "antd": "^5.16.0",
     "github-markdown-css": "^5.5.1",
     "lodash-es": "^4.17.21",
