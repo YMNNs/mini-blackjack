@@ -1,3 +1,6 @@
+@import url('@fontsource/inter/index.css');
+@import url('@fontsource/jetbrains-mono/index.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,7 +9,7 @@
   display: flex;
   justify-content: center;
   padding-top: 16px;
-  background-image: url('/background.png');
+  background-image: url('asstes/background.png');
   background-color: #20b152;
   box-shadow: inset 0 0 300px #095925;
   min-height: calc(100vh - 48px);
