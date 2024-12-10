@@ -12,8 +12,8 @@
       "matchDepTypes": ["dependencies", "devDependencies"]
     },
     {
-      "matchPackageNames": ["eslint"],
-      "allowedVersions": "<9.0.0"
+      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
+      "allowedVersions": "<19"
     }
   ],
   "rangeStrategy": "bump"
